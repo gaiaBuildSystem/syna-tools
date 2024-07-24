@@ -15,4 +15,6 @@ fi
 
 basedir_script_subimg=${moduledir}/lib/subimage
 
-source ${script_dir}/packaging.bashrc
+if [ -n "${script_dir}" ]; then
+	source ${script_dir}/packaging.bashrc
+fi

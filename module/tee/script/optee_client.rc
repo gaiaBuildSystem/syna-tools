@@ -25,6 +25,8 @@ ta_dev_kit_dir=${CONFIG_SYNA_SDK_PATH}/tee/optee_dev/${syna_chip_name}/export-ta
 out_ta_dir="${out_dir_rootfs}/lib/optee_armtz"
 out_ca_dir="${out_dir_rootfs}/opt/syna/bin"
 
+export OPTEE_TA_ENC="dev"
+
 make -C ${client_build_dir} \
   CROSS_COMPILE="${CROSS_COMPILE}" \
   CA_CFLAGS="${CFLAGS}" CA_LDFLAGS="${LDFLAGS}" O=${opt_client_outdir_intermediate}

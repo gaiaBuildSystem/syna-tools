@@ -476,10 +476,6 @@ if [ "is${CONFIG_UBOOT_FASTBOOT}" == "isy" ]; then
 
   echo "FASTBOOT Image Generation"
   cp -ad ${opt_outdir_release}/uboot_en.bin ${opt_outdir_release}/fastboot_en.bin
-elif [ "is${CONFIG_IMAGE_USBBOOT}" = "isy" ]; then
-  gen2_secure_image "usbboot" ${opt_outdir_intermediate}/uboot_raw.bin ${opt_outdir_release}/uboot_en.bin
-
-  echo "USBBOOT Image Generation"
 elif [ "is${CONFIG_UBOOT_SUBOOT}" = "isy" ]; then
   if [ "is${CONFIG_GENX_ENABLE}" = "isy" ]; then
     dd if=/dev/zero of=${opt_outdir_intermediate}/uboot_prepending.bin bs=1 count=48
@@ -492,6 +488,10 @@ elif [ "is${CONFIG_UBOOT_SUBOOT}" = "isy" ]; then
   fi
 
   echo "U-Boot SUBOOT Image Generation"
+elif [ "is${CONFIG_IMAGE_USBBOOT}" = "isy" ]; then
+  gen2_secure_image "usbboot" ${opt_outdir_intermediate}/uboot_raw.bin ${opt_outdir_release}/uboot_en.bin
+
+  echo "USBBOOT Image Generation"
 else
   ### Sign U-boot and Generate SPI U-boot combo ###
   ### Sign uboot ###

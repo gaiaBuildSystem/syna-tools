@@ -31,6 +31,16 @@ generate_firmware_subimg() {
   #  exit 1
   fi
 
+  # IFCP firmware
+  if [ "is${CONFIG_AMP_IP_DRM_IRDETO}" = "isy" ]; then
+    if [ -f ${infile_firmware}/ifcp.fw ]; then
+      params="$params -i IFCP -d ${infile_firmware}/ifcp.fw"
+    else
+      echo "no ifcp.fw under ${infile_firmware}!!!"
+      exit 1
+    fi
+  fi
+
   # DSP firmware
   if [ -f ${infile_firmware}/dsp.fw ]; then
     params="$params -i DSPF -d ${infile_firmware}/dsp.fw"
@@ -62,16 +72,6 @@ generate_firmware_subimg() {
       params="$params -i SMFW -d ${CONFIG_SYNA_SDK_OUT_TARGET_PATH}/${CONFIG_BL_REL_PATH}/sm_fw_en.bin"
     else
       echo "no sm_fw_en.bin under ${CONFIG_SYNA_SDK_OUT_TARGET_PATH}/${CONFIG_BL_REL_PATH}!!!"
-      exit 1
-    fi
-  fi
-
-  # IFCP firmware
-  if [ "is${CONFIG_AMP_IP_DRM_IRDETO}" = "isy" ]; then
-    if [ -f ${infile_firmware}/ifcp.fw ]; then
-      params="$params -i IFCP -d ${infile_firmware}/ifcp.fw"
-    else
-      echo "no ifcp.fw under ${infile_firmware}!!!"
       exit 1
     fi
   fi
