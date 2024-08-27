@@ -55,6 +55,8 @@ elif [ "is${CONFIG_IMAGE_NAND}" = "isy" ]; then
   else
     preboot_prebuilts_dir_bootflow="${preboot_prebuilts_dir_bootflow}/randomizer_n"
   fi
+elif [ "is${CONFIG_IMAGE_USBBOOT}" = "isy" ]; then
+  preboot_prebuilts_dir_bootflow="${preboot_prebuilts_dir_bootflow}/USBBOOT"
 else
   /bin/false
 fi
@@ -83,6 +85,8 @@ if [ "is${CONFIG_IMAGE_EMMC}" = "isy" ]; then
   preboot_prebuilts_dir_hwinit="${preboot_prebuilts_dir_hwinit}/EMMC"
 elif [ "is${CONFIG_IMAGE_NAND}" = "isy" ]; then
   preboot_prebuilts_dir_hwinit="${preboot_prebuilts_dir_hwinit}/NAND"
+elif [ "is${CONFIG_IMAGE_USBBOOT}" = "isy" ]; then
+  preboot_prebuilts_dir_hwinit="${preboot_prebuilts_dir_hwinit}/USBBOOT"
 else
   /bin/false
 fi

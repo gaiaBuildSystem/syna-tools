@@ -172,21 +172,6 @@ config BL_TA_FASTLOGO
 	depends on BL_PRELOAD_TA
 	bool "fastlogo ta"
 	default y
-
-config BL_TA_KEYMASTER
-	depends on BL_PRELOAD_TA
-	bool "keymaster ta"
-	default y
-
-config TA_KEYMASTER_V4
-	depends on BL_TA_KEYMASTER
-	bool "keymaster v4"
-	default n
-
-config BL_TA_DHUB
-	depends on BL_PRELOAD_TA
-	bool "dhub ta"
-	default y
 endif
 
 config BL_FASTLOGO

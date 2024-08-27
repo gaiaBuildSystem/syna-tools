@@ -27,6 +27,8 @@ out_ca_dir="${out_dir_rootfs}/opt/syna/bin"
 
 export OPTEE_TA_ENC="dev"
 
+cp ${CONFIG_SYNA_SDK_PATH}/factory/scripts/${syna_chip_name}/pta_enc/ ${CONFIG_SYNA_SDK_PATH}/tee/optee_dev/${syna_chip_name}/export-ta_arm64/ -a
+
 make -C ${client_build_dir} \
   CROSS_COMPILE="${CROSS_COMPILE}" \
   CA_CFLAGS="${CFLAGS}" CA_LDFLAGS="${LDFLAGS}" O=${opt_client_outdir_intermediate}
@@ -85,5 +87,16 @@ if [ "is${CONFIG_MIPI_DSI_TA}" = "isy" ]; then
 	export CA_LDFLAGS="${CONFIG_TOOLCHAIN_APPLICATION_LDFLAG}"
 	make -C ${build_dir} SYSROOT=${opt_build_sysroot} TA_DEV_KIT_DIR=${ta_dev_kit_dir}  CROSS_COMPILE_TA=aarch64-linux-gnu- CROSS_COMPILE_HOST=${CROSS_COMPILE} OPTEE_CLIENT_EXPORT=${teec_export} O=${out_dir} clean
 	make -C ${build_dir} -f Makefile.op HOST_CROSS_COMPILE=${CROSS_COMPILE}  CROSS_COMPILE=aarch64-linux-gnu- TEEC_EXPORT=${teec_export} --no-builtin-variables TA_DEV_KIT_DIR=${ta_dev_kit_dir} O=${out_dir}
+	cp -av ${out_dir}/*.ta ${out_ta_dir}
+fi
+
+if [ "is${CONFIG_BL_TA_FASTLOGO}" = "isy" ]; then
+	build_dir=${CONFIG_SYNA_SDK_PATH}/ampsdk/ta_amp/fastlogo
+	out_dir="${opt_client_outdir_intermediate}/fastlogo"
+	rm -rf ${out_dir}
+	mkdir -pv ${out_dir}
+	export CA_CFLAGS="${CONFIG_TOOLCHAIN_APPLICATION_CFLAG} --sysroot=${opt_build_sysroot}"
+	export CA_LDFLAGS="${CONFIG_TOOLCHAIN_APPLICATION_LDFLAG}"
+	make -C ${build_dir} -f Makefile.op SoC_Ver=${syna_chip_name} HOST_CROSS_COMPILE=${CROSS_COMPILE}  CROSS_COMPILE=aarch64-linux-gnu- TEEC_EXPORT=${teec_export} --no-builtin-variables TA_DEV_KIT_DIR=${ta_dev_kit_dir} O=${out_dir}
 	cp -av ${out_dir}/*.ta ${out_ta_dir}
 fi

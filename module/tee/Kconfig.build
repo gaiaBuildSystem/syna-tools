@@ -16,6 +16,10 @@ config TZK_MEM_LAYOUT
 	help
 		dongle/stb_2g/stb
 
+config TZK_SUPPORTED_MEM_LAYOUT
+	string "trustzone kernel supported memory layout"
+	default "stb_2g_cma_iommu stb_4g_cma_iommu"
+
 config TZK_MZONE_ENABLE
 	bool "enable memory zone"
 	default y
@@ -66,6 +70,11 @@ config OPTEE_TEST
 config MIPI_DSI_TA
 	bool "MIPI TA"
 	default n
+
+config BL_TA_FASTLOGO
+	bool "Enable Fastlogo for Ampless based system"
+	default n
+
 endif
 
 endmenu

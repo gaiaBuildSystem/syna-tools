@@ -101,6 +101,10 @@ if [ "is${CONFIG_DRIVERS_BERLIN_IR}" = "isy" ]; then
 script_list+=("${mod_dir}/drivers/input/keyboard/berlin-ir/build.sh")
 fi
 
+if [ "is${CONFIG_DRIVERS_SYNA_DEVFREQ}" = "isy" ]; then
+script_list+=("${mod_dir}/drivers/devfreq/build.sh")
+fi
+
 for s in "${script_list[@]}";do
     cur_script=${s}
     run_script "$@"

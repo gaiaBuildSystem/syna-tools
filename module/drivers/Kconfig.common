@@ -82,3 +82,7 @@ config DRIVERS_BERLIN_IR
     bool "Enable Berlin IR driver"
     depends on DRIVERS_SM
     default n
+
+config DRIVERS_SYNA_DEVFREQ
+    bool "Enable Syna Devfreq driver"
+    default n

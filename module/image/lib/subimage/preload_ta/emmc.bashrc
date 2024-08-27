@@ -4,6 +4,10 @@
 # Functions #
 #############
 
+out_dir_rootfs="${CONFIG_SYNA_SDK_OUT_TARGET_PATH}/${CONFIG_SYNA_SDK_OUT_ROOTFS}"
+out_ta_dir="${out_dir_rootfs}/lib/optee_armtz"
+fl_ta_file="1316a183-894d-43fe-9893-bb946ae103f5.ta"
+
 get_image_aligned() {
   f_input=$1; shift
   align_size=$1; shift
@@ -24,28 +28,10 @@ generate_preload_ta_subimg() {
   params=""
 
   if [ "is${CONFIG_BL_TA_FASTLOGO}" = "isy" ]; then
-    if [ -e ${input_ta_path}/libfastlogo.ta ]; then
-      params="$params -i LOGO -d ${input_ta_path}/libfastlogo.ta/libfastlogo.ta"
+    if [ -e ${out_ta_dir}/${fl_ta_file} ]; then
+      params="$params -i 03F5 -d ${out_ta_dir}/${fl_ta_file}"
     else
-      echo "no libfastlogo.ta under ${input_ta_path}!!!"
-      exit 1
-    fi
-  fi
-
-  if [ "is${CONFIG_BL_TA_KEYMASTER}" = "isy" ]; then
-    if [ -e ${input_ta_path}/libgencrypto.ta ]; then
-      params="$params -i CYPT -d ${input_ta_path}/libgencrypto.ta/libgencrypto.ta"
-    else
-      echo "no libgencrypto.ta under ${input_ta_path}!!!"
-      exit 1
-    fi
-  fi
-
-  if [ "is${CONFIG_BL_TA_DHUB}" = "isy" ]; then
-    if [ -e ${input_ta_path}/libdhub.ta ]; then
-      params="$params -i DHUB -d ${input_ta_path}/libdhub.ta/libdhub.ta"
-    else
-      echo "no libdhub.ta under ${input_ta_path}!!!"
+      echo "no Fastlogo ${fl_ta_file} under ${out_ta_dir}!!!"
       exit 1
     fi
   fi
