@@ -56,9 +56,14 @@ build_and_install_bootflow_feature() {
   if [ "is${syna_sec_lvl}" = "isgenx" ]; then
     preboot_basedir_security_genx=${opt_basedir_security_images}/chip/${opt_chip_name}/${opt_chip_rev}/${genx_types}
     INSTALL_D ${preboot_basedir_security_genx}/key_stores/ ${preboot_release_topdir}/prebuilts/${preboot_feature_variant}/key_stores
-    INSTALL_F_L ${preboot_basedir_security_genx}/bcm_kernel.bin ${preboot_release_topdir}/prebuilts/${preboot_feature_variant}/
-    INSTALL_F_L ${preboot_basedir_security_genx}/boot_monitor.bin ${preboot_release_topdir}/prebuilts/${preboot_feature_variant}/
-    INSTALL_F_L ${preboot_basedir_security_genx}/erom.bin ${preboot_release_topdir}/prebuilts/${preboot_feature_variant}/
+    if [ "${opt_flash_type}" = "USBBOOT" ]; then
+      preboot_basedir_security_genx_source=${preboot_basedir_security_genx}/usb
+    else
+      preboot_basedir_security_genx_source=${preboot_basedir_security_genx}
+    fi
+    INSTALL_F_L ${preboot_basedir_security_genx_source}/bcm_kernel.bin ${preboot_release_topdir}/prebuilts/${preboot_feature_variant}/
+    INSTALL_F_L ${preboot_basedir_security_genx_source}/boot_monitor.bin ${preboot_release_topdir}/prebuilts/${preboot_feature_variant}/
+    INSTALL_F_L ${preboot_basedir_security_genx_source}/erom.bin ${preboot_release_topdir}/prebuilts/${preboot_feature_variant}/
     INSTALL_F ${preboot_basedir_security_genx}/uboot/bcm_kernel.bin ${preboot_release_topdir}/prebuilts/${preboot_feature_variant}/uboot/
     INSTALL_F ${preboot_basedir_security_genx}/uboot/boot_monitor.bin ${preboot_release_topdir}/prebuilts/${preboot_feature_variant}/uboot/
     INSTALL_F ${preboot_basedir_security_genx}/uboot/erom.bin ${preboot_release_topdir}/prebuilts/${preboot_feature_variant}/uboot/

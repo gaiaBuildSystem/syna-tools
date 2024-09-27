@@ -116,6 +116,10 @@ if [ "is${opt_genx_enable}" != "is" ]; then
     f_EROM=${preboot_prebuilts_dir_bootflow}/uboot/erom.bin
     f_BCM_Kernel=${preboot_prebuilts_dir_bootflow}/uboot/bcm_kernel.bin
     f_boot_monitor=${preboot_prebuilts_dir_bootflow}/uboot/boot_monitor.bin
+  elif [ "${opt_flash_type}" = "USBBOOT" ]; then
+    f_EROM=${preboot_prebuilts_dir_bootflow}/usb/erom.bin
+    f_BCM_Kernel=${preboot_prebuilts_dir_bootflow}/usb/bcm_kernel.bin
+    f_boot_monitor=${preboot_prebuilts_dir_bootflow}/usb/boot_monitor.bin
   else
     f_EROM=${preboot_prebuilts_dir_bootflow}/erom.bin
     f_BCM_Kernel=${preboot_prebuilts_dir_bootflow}/bcm_kernel.bin

@@ -217,6 +217,9 @@ cp -ad ./System.map ${opt_outdir_release}/.
 if [ -f ./arch/${CONFIG_LINUX_ARCH}/boot/zImage ]; then
   cp -ad ./arch/${CONFIG_LINUX_ARCH}/boot/zImage ${opt_outdir_release}/zImage
 fi
+if [ -f ./arch/${CONFIG_LINUX_ARCH}/boot/Image.gz ]; then
+  cp -ad ./arch/${CONFIG_LINUX_ARCH}/boot/Image.gz ${opt_outdir_release}/Image.gz
+fi
 
 cp -ad ${opt_linux_src}/arch/${CONFIG_LINUX_ARCH}/configs/${CONFIG_LINUX_DEFCONFIG} ${opt_outdir_release}/.
 

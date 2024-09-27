@@ -101,7 +101,6 @@ class GenXSecureImage:
 
     aes_list = {'MINILOADER':'MDK_MINI_LOADER.bin',
                 'SYS_INIT': 'MDK_SYS_INIT.bin',
-                'TZK_BOOT_PARAMETER': 'MDK_TZK_BOOT_PARAMETER.bin',
                 'TA': 'TA_K1_AES_Key_TA.bin',
                 'TSP_FW': 'MDK_TSP_FW.bin',
                 'DSP_FW': 'MDK_DSP_FW.bin',
@@ -113,7 +112,7 @@ class GenXSecureImage:
                 'UBOOT': 'K1_BOOT_B.rsa.priv.pem',
                 'SYS_INIT': 'K1_BOOT_B.rsa.priv.pem',
                 'SCS_DATA_PARAM': 'K1_BOOT_B.rsa.priv.pem',
-                'TZK_BOOT_PARAMETER': 'K1_TEE_B.rsa.priv.pem',
+                'TZK_BOOT_PARAMETER': 'K1_REE_A.rsa.priv.pem',
                 'TA': 'TA_K1_RSA.priv.pem',
                 'TZK_OEM_SETTINGS': 'K1_REE_A.rsa.priv.pem',
                 'FASTBOOT': 'K1_REE_A.rsa.priv.pem',

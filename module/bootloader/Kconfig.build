@@ -171,7 +171,7 @@ if BL_PRELOAD_TA
 config BL_TA_FASTLOGO
 	depends on BL_PRELOAD_TA
 	bool "fastlogo ta"
-	default y
+	default n
 endif
 
 config BL_FASTLOGO
@@ -179,30 +179,6 @@ config BL_FASTLOGO
 	default n
 	help
 		display fastlogo when system is booting up
-
-if BL_FASTLOGO
-
-config  BL_FASTLOGO_DISPLAY_MODE
-	string "Display Mode"
-	default "0"
-	help
-		Display Mode 0-HDMI 1-MIPI 2-Dual
-
-config  BL_FASTLOGO_RESID
-	string "Primary Display Res ID"
-	default "13"
-	help
-		Display Res ID (13, 24, 102, etc.)
-
-if BL_FASTLOGO_DISPLAY_MODE=2
-config  BL_FASTLOGO_SECONDARY_RESID
-	string "Secondary Display Res ID"
-	default "102"
-	help
-		Display Res ID (13, 24, 102, etc.)
-endif
-
-endif
 
 menuconfig BL_SYSTEM_MANAGER
 	bool "System Manager"

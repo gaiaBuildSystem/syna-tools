@@ -86,12 +86,6 @@ build_bootloader() {
   fi
   if [ "is${CONFIG_BL_FASTLOGO}" = "isy" ]; then
     cmd2run="${cmd2run} CONFIG_FASTLOGO=y"
-    cmd2run="${cmd2run} BL_FASTLOGO_RESID=${CONFIG_BL_FASTLOGO_RESID}"
-
-    cmd2run="${cmd2run} BL_DISPLAY_MODE=${CONFIG_BL_FASTLOGO_DISPLAY_MODE}"
-    if [ "is${CONFIG_BL_FASTLOGO_DISPLAY_MODE}" = "is2" ]; then
-      cmd2run="${cmd2run} BL_SECONDARY_RESID=${CONFIG_BL_FASTLOGO_SECONDARY_RESID}"
-    fi
   fi
   if [ "is${CONFIG_BL_FUNCTION_BUTTON}" = "isy" ]; then
     cmd2run="${cmd2run} CONFIG_FUNCTION_BUTTON_ENABLE=y"
