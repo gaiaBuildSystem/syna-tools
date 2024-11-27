@@ -178,7 +178,7 @@ firmware_b
 n
 12
 
-+1408M
++2112M
 0700
 c
 12
@@ -187,7 +187,7 @@ rootfs_a
 n
 13
 
-+1408M
++2112M
 0700
 c
 13
@@ -232,7 +232,7 @@ misc
 n
 18
 
-+4028M
++2620M
 0700
 c
 18
@@ -264,7 +264,7 @@ dd bs=512 if="$sd14" of=$OUTPUT seek=`sgdisk -i 14 $OUTPUT | grep "First sector"
 dd bs=512 if="$sd15" of=$OUTPUT seek=`sgdisk -i 15 $OUTPUT | grep "First sector" | awk '{print $3}'` conv=notrunc
 
 e2fsck -f home.subimg
-resize2fs home.subimg 4028M
+resize2fs home.subimg 2620M
 dd bs=512 if="$sd18" of=$OUTPUT seek=`sgdisk -i 18 $OUTPUT | grep "First sector" | awk '{print $3}'` conv=notrunc
 
 rm *.subimg

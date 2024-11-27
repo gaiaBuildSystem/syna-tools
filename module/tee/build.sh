@@ -133,14 +133,20 @@ fi
 oem_setting_dir=${module_topdir}/products/${syna_chip_name}/${boot_seclvl}/${tz_memlayout}
 
 # Combine TEE with OEM Parameter Setting
-  [ -f ${oem_setting_dir}/oem_setting.cfg ]
+if [ -f ${oem_setting_dir}/oem_setting.cfg ]; then
   [ -d ${opt_outdir_intermediate}/ ]
 
   source ${module_build_topdir}/script/oem_setting.rc
   echo ${oem_setting_dir}/oem_setting.cfg
   echo ${opt_outdir_intermediate}/oem_setting.bin
   gen_oem_setting ${oem_setting_dir}/oem_setting.cfg ${opt_board_memory_size} ${opt_outdir_intermediate}/oem_setting.bin
+else
+  source ${module_build_topdir}/script/oem_setting.rc
+  echo '{"NotSupport":{"Address":"0x0","Size": "0x0"}}' > ${oem_setting_dir}/oem_setting.cfg
+  gen_oem_setting ${oem_setting_dir}/oem_setting.cfg ${opt_board_memory_size} ${opt_outdir_intermediate}/oem_setting.bin
+  rm -fv ${oem_setting_dir}/oem_setting.cfg
 
+fi
   source ${module_build_topdir}/script/tee_pack.rc pack_stage2
 
 
