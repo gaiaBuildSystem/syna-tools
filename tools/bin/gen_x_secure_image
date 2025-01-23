@@ -113,6 +113,8 @@ class GenXSecureImage:
                 'SYS_INIT': 'K1_BOOT_B.rsa.priv.pem',
                 'SCS_DATA_PARAM': 'K1_BOOT_B.rsa.priv.pem',
                 'TZK_BOOT_PARAMETER': 'K1_REE_A.rsa.priv.pem',
+                'TZ_KERNEL': 'K1_REE_A.rsa.priv.pem',
+                'ATF': 'K1_REE_A.rsa.priv.pem',
                 'TA': 'TA_K1_RSA.priv.pem',
                 'TZK_OEM_SETTINGS': 'K1_REE_A.rsa.priv.pem',
                 'FASTBOOT': 'K1_REE_A.rsa.priv.pem',

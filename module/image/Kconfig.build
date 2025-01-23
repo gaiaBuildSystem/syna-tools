@@ -58,4 +58,11 @@ config NAND_FACTORY
 	default n
 endif
 
+if IMAGE_SPISUBOOT
+
+config SPI_BOOT_PART_SIZE
+	int "SPI boot part size"
+	default 524288
+endif
+
 endmenu

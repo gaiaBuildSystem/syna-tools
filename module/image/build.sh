@@ -12,6 +12,9 @@ fi
 if [ "is${CONFIG_IMAGE_NAND}" = "isy" ]; then
     script_dir=${moduledir}/lib/boot_type/nand
 fi
+if [ "is${CONFIG_IMAGE_SPISUBOOT}" = "isy" ]; then
+    script_dir=${moduledir}/lib/boot_type/spi
+fi
 if [ "is${CONFIG_IMAGE_USBBOOT}" = "isy" ]; then
     script_dir=${moduledir}/lib/boot_type/usb
 fi

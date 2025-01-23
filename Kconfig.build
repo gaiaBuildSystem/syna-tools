@@ -35,6 +35,8 @@ config IMAGE_NAND
 	bool "NAND image"
 config IMAGE_USBBOOT
 	bool "USBBOOT image"
+config IMAGE_SPISUBOOT
+	bool "SPI SU-Boot image"
 endchoice
 
 source "kconfig/Kconfig.bootflow"
