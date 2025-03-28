@@ -67,14 +67,9 @@ config OPTEE_TEST
 	bool "OPTEE Test"
 	default y
 
-config MIPI_DSI_TA
-	bool "MIPI TA"
-	default n
-
 config BL_TA_FASTLOGO
 	bool "Enable Fastlogo for Ampless based system"
 	default n
 
 endif
-
 endmenu

@@ -105,6 +105,10 @@ if [ "is${CONFIG_DRIVERS_SYNA_DEVFREQ}" = "isy" ]; then
 script_list+=("${mod_dir}/drivers/devfreq/build.sh")
 fi
 
+if [ "is${CONFIG_DRIVERS_RPI_PANEL_ATTINY_REGULATOR}" = "isy" ]; then
+script_list+=("${mod_dir}/drivers/regulator/rpi-panel-attiny-regulator/build.sh")
+fi
+
 for s in "${script_list[@]}";do
     cur_script=${s}
     run_script "$@"

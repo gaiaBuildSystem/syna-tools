@@ -29,7 +29,6 @@ install_ta_for_kernel() {
   kernel_ta_path=${CONFIG_SYNA_SDK_OUT_TARGET_PATH}/system/${ta_path_new}
   install_ta_list=('libvmeta.ta')
   install_ta_list+=('libptm.ta')
-  install_ta_list+=('libmipi_dsi.ta')
   if [ -d ${kernel_ta_path} ]; then
     for i in ${!install_ta_list[*]}; do
         ta=${install_ta_list[$i]}

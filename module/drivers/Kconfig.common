@@ -85,4 +85,7 @@ config DRIVERS_BERLIN_IR
 
 config DRIVERS_SYNA_DEVFREQ
     bool "Enable Syna Devfreq driver"
+
+config DRIVERS_RPI_PANEL_ATTINY_REGULATOR
+    bool "Enable RPI Panel ATTINY Regulator driver"
     default n
