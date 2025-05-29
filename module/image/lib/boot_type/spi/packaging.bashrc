@@ -18,7 +18,7 @@ genx_spi_suboot_combo() {
   cat $f_preboot >> $f_spi_combo
 
   preboot_size=`stat -c %s ${f_spi_combo}`
-  padding_size=$[524288 - $preboot_size]
+  padding_size=$[$spi_preboot_end - $preboot_size]
 
   f_PADDING=${outdir_product_release_spi}/dummy.bin
   dd if=/dev/zero of=$f_PADDING bs=1 count=$padding_size
@@ -28,7 +28,7 @@ genx_spi_suboot_combo() {
   cat $f_tee >> $f_spi_combo
 
   tee_size=`stat -c %s ${f_spi_combo}`
-  padding_size=$[1114112 - $tee_size]
+  padding_size=$[$spi_tzk_end - $tee_size]
 
   f_PADDING=${outdir_product_release_spi}/dummy.bin
   dd if=/dev/zero of=$f_PADDING bs=1 count=$padding_size
@@ -38,7 +38,7 @@ genx_spi_suboot_combo() {
   cat $f_bl >> $f_spi_combo
 
   bl_size=`stat -c %s ${f_spi_combo}`
-  padding_size=$[2031616 - $bl_size]
+  padding_size=$[$spi_bl_end - $bl_size]
 
   f_PADDING=${outdir_product_release_spi}/dummy.bin
   dd if=/dev/zero of=$f_PADDING bs=1 count=$padding_size

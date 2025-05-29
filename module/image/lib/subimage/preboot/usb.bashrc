@@ -28,5 +28,10 @@ cp -ad ${preboot_outdir_build_release}/scs_data_param.sign ${outdir_subimg_inter
 ### Sysinit ###
 cp -ad ${preboot_outdir_build_release}/sysinit_en.bin ${outdir_subimg_intermediate}/
 
+if [ "is${syna_chip_name}" = "isdolphin" ]; then
+    cp -ad ${preboot_outdir_build_release}/gen3_ddr_phy_fw_0.bin ${outdir_subimg_intermediate}/
+    cp -ad ${preboot_outdir_build_release}/gen3_ddr_phy_fw_1.bin ${outdir_subimg_intermediate}/
+fi
+
 ### Miniloader ###
 cp -ad ${preboot_outdir_build_release}/miniloader_en.bin ${outdir_subimg_intermediate}/

@@ -73,6 +73,11 @@ if [ -f ${outdir_subimg_intermediate}/miniloader_en.bin ]; then
   cp ${outdir_subimg_intermediate}/scs_data_param.sign ${outdir_product_release_usb}/gen3_scs_param.bin.usb -f
   cp ${outdir_subimg_intermediate}/sysinit_en.bin ${outdir_product_release_usb}/gen3_sysinit.bin.usb -f
   cp ${outdir_subimg_intermediate}/miniloader_en.bin ${outdir_product_release_usb}/gen3_miniloader.bin.usb -f
+
+  if [ "is${syna_chip_name}" = "isdolphin" ]; then
+    cp ${outdir_subimg_intermediate}/gen3_ddr_phy_fw_0.bin ${outdir_product_release_usb}/gen3_ddr_phy_fw_0.bin.usb -f
+    cp ${outdir_subimg_intermediate}/gen3_ddr_phy_fw_1.bin ${outdir_product_release_usb}/gen3_ddr_phy_fw_1.bin.usb -f
+  fi
 fi
 
 ### TEE ###

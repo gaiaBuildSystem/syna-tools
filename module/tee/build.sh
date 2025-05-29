@@ -29,7 +29,7 @@ opt_genx_enable=${CONFIG_GENX_ENABLE}
 
 ### 1. v1: tz team release clear binary. tz.bin
 ### 2. v2: tz team release encrypted binaries. tz1_en.bin, tz2_en.bin
-tz_rel_ver=1
+tz_rel_ver="genx"
 
 if [ "is${CONFIG_OPTEE}" = "isy" ]; then
 	TEE_CLIENT="optee_client"
