@@ -1,0 +1,5 @@
+# feature	bootflow	android_bootctrl
+bootflow	NR			n
+bootflow	NR			y
+bootflow	AB			n
+bootflow	AB			y

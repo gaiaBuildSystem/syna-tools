@@ -1,0 +1,5 @@
+config AMP_IP_DRM_WV_PROVISION_20
+    bool "Provision 2.0"
+
+config AMP_IP_DRM_WV_PROVISION_40
+    bool "Provision 4.0"

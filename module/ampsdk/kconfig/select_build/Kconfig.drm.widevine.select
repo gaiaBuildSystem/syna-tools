@@ -1,0 +1,10 @@
+choice
+    prompt "Select"
+    default AMP_IP_DRM_WV_16
+source "module/ampsdk/kconfig/Kconfig.drm.widevine.version"
+endchoice
+choice
+    prompt "Select"
+    default AMP_IP_DRM_WV_PROVISION_20
+source "module/ampsdk/kconfig/Kconfig.drm.widevine.provision"
+endchoice

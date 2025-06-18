@@ -1,0 +1,19 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+
+source "module/ampsdk/kconfig/audio/Kconfig.audio.app.impl"
+
+comment "Supported Types"
+
+config AMP_AUDIO_MIXER_SUPPORTED
+	bool "Mixer"
+	default n
+	select AMP_AUDIO_MIXER_USE_ARM
+
+config AMP_AUDIO_SRC_SUPPORTED
+	bool "SRC"
+	default y
+	select AMP_AUDIO_SRC_USE_ARM
+
