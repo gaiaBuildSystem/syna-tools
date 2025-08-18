@@ -13,6 +13,7 @@
 #include <fcntl.h>
 #include <libgen.h>
 #include <limits.h>
+#include <ctype.h>
 
 #include "genimg.h"
 
