@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 
 append_binary8(){
