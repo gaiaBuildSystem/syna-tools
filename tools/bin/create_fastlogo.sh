@@ -89,7 +89,7 @@ append_header 1280 720 $ofile
 
 let logo_offset=$logo_offset+1280*720*2
 append_binary8 $logo_offset $ofile
-append_header 640 480 $ofile
+append_header 800 480 $ofile
 
 #append zeros to take align logo offset
 append_zero 968 $ofile
@@ -97,7 +97,7 @@ append_zero 968 $ofile
 #use ffmpeg to generate yuv files for 3 resolutions
 ffmpeg -i $ifile -pix_fmt uyvy422 -s 1920x1080 -f rawvideo - | cat >> $ofile
 ffmpeg -i $ifile -pix_fmt uyvy422 -s 1280x720 -f rawvideo - | cat >> $ofile
-ffmpeg -i $ifile -pix_fmt uyvy422 -s 640x480 -f rawvideo - | cat >> $ofile
+ffmpeg -i $ifile -pix_fmt uyvy422 -s 800x480 -f rawvideo - | cat >> $ofile
 
 gzip $ofile
 }
