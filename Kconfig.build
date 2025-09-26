@@ -35,6 +35,10 @@ config IMAGE_NAND
 	bool "NAND image"
 config IMAGE_USBBOOT
 	bool "USBBOOT image"
+config IMAGE_SPISUBOOT
+	bool "SPI SU-Boot image"
+config IMAGE_XSPI
+	bool "XSPI image"
 endchoice
 
 source "kconfig/Kconfig.bootflow"
@@ -85,6 +89,13 @@ config GENX_ENABLE
 		default n
 		help
 			enable GenX secure boot flow
+
+config GENX_MCU
+	select GENX_ENABLE
+	bool "GenX MCU enable"
+		default n
+		help
+			it's for sl26xx mcu boot flow
 
 config WAKEUP_INTR
 	int "System Wakeup interruppt number"

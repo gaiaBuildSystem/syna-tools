@@ -7,7 +7,8 @@ run_script() {
   script_to_run="${preboot_module_dir}/lib/scripts/stage1/${script_name}"
 
   [ -f ${script_to_run} ]
-  source ${script_to_run} "$stage"
+    set -- "$stage"
+    . ${script_to_run}
 }
 
 

@@ -87,3 +87,7 @@ config BOOTCTRL
 config SYNA_COMPOSITOR
 	bool "Synaptics syna-compositor"
 	default n
+
+config V4L2ISP
+	bool "v4l2isp driver tframeworks mediacontrol"
+	default n

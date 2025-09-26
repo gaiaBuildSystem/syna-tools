@@ -6,12 +6,5 @@
 config AMP_AUDIO_MIXER_USE_ARM
 	bool
 
-config AMP_AUDIO_MIXER_USE_ZSP
-	bool
-
 config AMP_AUDIO_SRC_USE_ARM
 	bool
-
-config AMP_AUDIO_SRC_USE_ZSP
-	bool
-

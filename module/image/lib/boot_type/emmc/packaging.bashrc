@@ -4,6 +4,9 @@
 # Functions #
 #############
 
+set -o errtrace
+trap 'echo Fatal error: script $0 aborting at ${BASH_SOURCE}:$LINENO, command \"$BASH_COMMAND\" returned $? 1>&2; exit 1' ERR
+
 emmc_release_subimg() {
   local subimg_file
   local subimg_name
@@ -108,7 +111,7 @@ if [ "is${CONFIG_BL_PRELOAD_TA}" = "isy" ]; then
 fi
 
 ### Fastlogo  ###
-if [ "is${CONFIG_GENX_ENABLE}" = "isy" ]; then
+if [ "is${CONFIG_BL_FASTLOGO}" = "isy" ]; then
     source ${basedir_script_subimg}/fastlogo/common.bashrc
     source ${basedir_script_subimg}/fastlogo/emmc.bashrc
 fi
@@ -167,6 +170,10 @@ emmc_release_subimg_imagelist "preboot" "${subimg_list}"
 emmc_release_subimg_imagelist "tee" "${subimg_list}"
 emmc_release_subimg_imagelist "tee_recovery" "${subimg_list}"
 
+if [ "is${CONFIG_GENX_MCU}" = "isy" ]; then
+  emmc_release_subimg_imagelist "sysmgr" "${subimg_list}"
+fi
+
 if [ "is${CONFIG_ANDROID_OS}" == "isy" ]; then
         emmc_release_subimg_imagelist "fastboot" "${subimg_list}"
 fi
@@ -190,18 +197,6 @@ if [ "is${CONFIG_UBOOT_FASTBOOT}" == "isy" ]; then
 fi
 
 if [ "is${CONFIG_BL_FASTLOGO}" == "isy" ]; then
-  if [ "is${CONFIG_GENX_ENABLE}" = "isy" ]; then
-    if [ -f ${outdir_subimg_intermediate}/fastlogo.subimg ]; then
-      cat ${outdir_subimg_intermediate}/fastlogo.subimg | gzip -1 > ${outdir_product_release_emmc}/fastlogo.subimg.gz
-    fi
-  fi
-  if [ "is${CONFIG_GENX_ENABLE}" != "isy" ]; then
-    if [ -f ${product_dir}/fastlogo.subimg.gz ]; then
-      cp ${product_dir}/fastlogo.subimg.gz ${outdir_product_release_emmc}
-      cp ${product_dir}/fastlogo.subimg.gz ${outdir_subimg_intermediate}
-      gunzip -f ${outdir_subimg_intermediate}/fastlogo.subimg.gz
-    fi
-  fi
   emmc_release_subimg_imagelist "fastlogo" "${subimg_list}"
 fi
 

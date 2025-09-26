@@ -38,6 +38,11 @@ genx_secure_image() {
   exec_args="${exec_args} --extras=$in_extras"
   exec_args="${exec_args} --workdir-security-tools=${security_tools_path}"
   exec_args="${exec_args} --workdir-security-keys=${security_keys_path}"
+  if [ "is${CONFIG_GENX_MCU}" = "isy" ]; then
+    exec_args="${exec_args} --tool-version=genx_v3"
+  else
+    exec_args="${exec_args} --tool-version=genx"
+  fi
 
   # Input and output
   exec_args="${exec_args} --in_payload=${f_input} --out_store=${f_output}"
@@ -47,22 +52,31 @@ genx_secure_image() {
 }
 
 product_dir=${CONFIG_SYNA_SDK_PRODUCT_PATH}/${CONFIG_PRODUCT_NAME}
-opt_outdir_release=${CONFIG_SYNA_SDK_OUT_TARGET_PATH}/fastlogo
-opt_outdir_intermediate=${opt_outdir_release}/intermediate
+opt_outdir_intermediate=${CONFIG_SYNA_SDK_OUT_TARGET_PATH}/obj/PACKAGING/subimg_intermediate
 mkdir -p ${opt_outdir_intermediate}
+
+if [ "is${CONFIG_BL_FASTLOGO}" != "isy" ]; then
+  echo "No FASTLOGO configed!!!"
+  exit 0
+fi
 
 if [ "is${CONFIG_GENX_ENABLE}" = "isy" ]; then
   if [ -f ${product_dir}/fastlogo.subimg.gz ]; then
     cp ${product_dir}/fastlogo.subimg.gz ${opt_outdir_intermediate}
-    gunzip ${opt_outdir_intermediate}/fastlogo.subimg.gz
+    gunzip -f ${opt_outdir_intermediate}/fastlogo.subimg.gz
     mv ${opt_outdir_intermediate}/fastlogo.subimg ${opt_outdir_intermediate}/fastlogo_payload.subimg
   fi
 
   if [ -f ${opt_outdir_intermediate}/fastlogo_payload.subimg ]; then
     ${security_tools_path}in_extras.py "FASTLOGO" ${opt_outdir_intermediate}/in_fastlogo_extras.bin 0x00000001
-    genx_secure_image "FASTLOGO" ${opt_outdir_intermediate}/in_fastlogo_extras.bin 0x0 ${opt_outdir_intermediate}/fastlogo_payload.subimg ${opt_outdir_release}/fastlogo_en.subimg
+    genx_secure_image "FASTLOGO" ${opt_outdir_intermediate}/in_fastlogo_extras.bin 0x0 ${opt_outdir_intermediate}/fastlogo_payload.subimg ${opt_outdir_intermediate}/fastlogo_en.subimg
+  fi
+
+  # Generate subimg
+  ${basedir_tools}/prepend_image_info.sh ${opt_outdir_intermediate}/fastlogo_en.subimg ${outfile_fastlogo_subimg}
+else
+  if [ -f ${product_dir}/fastlogo.subimg.gz ]; then
+    cp ${product_dir}/fastlogo.subimg.gz ${opt_outdir_intermediate}
+    gunzip -f ${opt_outdir_intermediate}/fastlogo.subimg.gz
   fi
 fi
-
-# Generate subimg
-${basedir_tools}/prepend_image_info.sh ${opt_outdir_release}/fastlogo_en.subimg ${outfile_fastlogo_subimg}

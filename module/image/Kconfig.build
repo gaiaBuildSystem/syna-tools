@@ -58,4 +58,29 @@ config NAND_FACTORY
 	default n
 endif
 
+if IMAGE_SPISUBOOT
+
+config SPI_BOOT_PART_SIZE
+	int "SPI boot part size"
+	default 524288
+endif
+
+if IMAGE_XSPI
+config XSPI_BLOCK_SIZE
+	int "NAND/NOR block size"
+	default 262144
+
+config XSPI_TOTAL_SIZE
+	int "NAND/NOR total size"
+	default 268435456
+
+config FLASH_ATTR
+        string "flash attribute"
+        default "ISSI-MX-1BIT"
+        help
+                "specify the file name of flash attribute"
+endif
+
+
+
 endmenu

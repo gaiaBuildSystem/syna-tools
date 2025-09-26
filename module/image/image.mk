@@ -1,4 +1,14 @@
-IMAGE_DEPENDENCIES = toplevel tee ta_enc fw_enc security factory linux
+IMAGE_DEPENDENCIES = toplevel tee security
+
+ifeq  ($(CONFIG_UBOOT_SPIUBOOT),y)
+IMAGE_DEPENDENCIES+=preboot
+IMAGE_DEPENDENCIES+=uboot
+else
+
+IMAGE_DEPENDENCIES+=ta_enc
+IMAGE_DEPENDENCIES+=fw_enc
+IMAGE_DEPENDENCIES+=factory
+IMAGE_DEPENDENCIES+=linux
 
 ifeq  ($(CONFIG_PREBOOT),y)
 IMAGE_DEPENDENCIES+=preboot
@@ -174,5 +184,6 @@ IMAGE_DEPENDENCIES+=amplitude
 endif
 ifeq ($(CONFIG_ISP_PQTOOL),y)
 IMAGE_DEPENDENCIES+=isp_pqtool
+endif
 endif
 $(eval $(generic-module))

@@ -26,6 +26,10 @@ if [ "is${CONFIG_UBOOT_SPIUBOOT}" = "isy" ]; then
     opt_spi_uboot=${CONFIG_UBOOT_SPIUBOOT}
 fi
 
+if [ "is${CONFIG_UBOOT_SPISUBOOT}" = "isy" ]; then
+    opt_spi_suboot=${CONFIG_UBOOT_SPISUBOOT}
+fi
+
 if [ "is${CONFIG_LINUX_OS}" = "isy" ]; then
   opt_bootflow="LINUX"
 fi
@@ -49,6 +53,11 @@ fi
 
 if [ "is${CONFIG_IMAGE_USBBOOT}" = "isy" ]; then
   opt_flash_type="USBBOOT"
+fi
+
+if [ "is${CONFIG_IMAGE_SPISUBOOT}" = "isy" ]; then
+  opt_flash_type="SPISUBOOT"
+  opt_boot_part_size="${CONFIG_SPI_BOOT_PART_SIZE}"
 fi
 
 if [ "is${CONFIG_FASTBOOT_FLOW}" = "isy" ]; then

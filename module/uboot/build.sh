@@ -1,18 +1,16 @@
 #!/bin/bash
 
-source build/header.rc
-source build/chip.rc
-source build/security.rc
+. build/header.rc
+. build/chip.rc
+. build/security.rc
 
 echo "u-boot build script called"
 
 build_uboot() {
-  pushd ${topdir}/boot/${CONFIG_UBOOT_SRC_PATH}
+  cd ${topdir}/boot/${CONFIG_UBOOT_SRC_PATH} || exit 1
 
-  local TARGET_CONFIG
   TARGET_CONFIG=merged_defconfig
   # merge fragmented config if using OEM bl
-  local tmpfile
   tmpfile=$(mktemp uboot.config.XXXXXX)
   if [ "x${CONFIG_BL_RPMB_AVB}" == "xy" ]; then
     echo "CONFIG_SYNA_FASTBOOT_RPMB_LOCK=y" > $tmpfile
@@ -30,7 +28,6 @@ build_uboot() {
   mv .config configs/${TARGET_CONFIG}
   rm -fv $tmpfile
 
-  local cmd2run
   cmd2run="env"
   eval "$cmd2run make mrproper"
 
@@ -46,7 +43,7 @@ build_uboot() {
   eval "CONFIG_RDK_SYS=${CONFIG_RDK_SYS} $cmd2run make ${TARGET_CONFIG} -j${CONFIG_CPU_NUMBER}"
   eval "CONFIG_RDK_SYS=${CONFIG_RDK_SYS} $cmd2run make EXT_DTB=arch/${CONFIG_UBOOT_ARCH}/dts/${CONFIG_UBOOT_DTS}.dtb -j24"
   mv configs/merged_defconfig ${opt_outdir_intermediate}/output_uboot -v
-  popd
+  cd - || exit 1
 }
 #############
 # Functions #
@@ -143,6 +140,11 @@ genx_secure_image() {
   exec_args="${exec_args} --extras=$in_extras"
   exec_args="${exec_args} --workdir-security-tools=${security_tools_path}"
   exec_args="${exec_args} --workdir-security-keys=${security_keys_path}"
+  if [ "is${CONFIG_GENX_MCU}" = "isy" ]; then
+    exec_args="${exec_args} --tool-version=genx_v3"
+  else
+    exec_args="${exec_args} --tool-version=genx"
+  fi
 
   # Input and output
   exec_args="${exec_args} --in_payload=${f_input} --out_store=${f_output}"
@@ -413,6 +415,24 @@ gen_nocs_spi_combo() {
   fi
 }
 
+gen_extras() {
+  local out=$1
+  # fetch uboot destination address from memory layout
+  tee_topdir=${topdir}/tee/tee
+  f_mr=${tee_topdir}/products/${syna_chip_name}/${CONFIG_TZK_MEM_LAYOUT}/mr_config
+  echo $f_mr
+  if [ -f $f_mr ]; then
+    uboot_dest=$(awk '/bootloader/{print $2}' $f_mr)
+  else
+    echo "$f_mr is not found"
+    exit
+  fi
+
+  echo ${uboot_dest}
+
+  ${security_tools_path}in_extras.py "BOOT_LOADER_GENX_V3" ${out} 0x00000000 0x00000000 ${uboot_dest} ${uboot_dest}
+}
+
 ########
 # Main #
 ########
@@ -502,30 +522,47 @@ if [ "is${CONFIG_UBOOT_FASTBOOT}" == "isy" ]; then
 
   echo "FASTBOOT Image Generation"
   cp -ad ${opt_outdir_release}/uboot_en.bin ${opt_outdir_release}/fastboot_en.bin
-elif [ "is${CONFIG_IMAGE_USBBOOT}" = "isy" ]; then
-  gen2_secure_image "usbboot" ${opt_outdir_intermediate}/uboot_raw.bin ${opt_outdir_release}/uboot_en.bin
-
-  echo "USBBOOT Image Generation"
 elif [ "is${CONFIG_UBOOT_SUBOOT}" = "isy" ]; then
   if [ "is${CONFIG_GENX_ENABLE}" = "isy" ]; then
-    dd if=/dev/zero of=${opt_outdir_intermediate}/uboot_prepending.bin bs=1 count=48
-    cat ${opt_outdir_intermediate}/uboot_prepending.bin ${opt_outdir_intermediate}/uboot_raw.bin > ${opt_outdir_intermediate}/uboot_prepending_raw.bin
-
-    ${security_tools_path}in_extras.py "BOOT_LOADER" ${opt_outdir_release}/in_boot_loader_extras.bin 0x00000001
-    genx_secure_image "BOOT_LOADER" "ree" ${opt_outdir_release}/in_boot_loader_extras.bin 0x0 ${opt_outdir_intermediate}/uboot_prepending_raw.bin ${opt_outdir_release}/uboot_en.bin
+    binary2enc="uboot_raw.bin"
+    if [ "is${CONFIG_GENX_MCU}" = "isy" ]; then
+      gen_extras ${opt_outdir_release}/in_boot_loader_extras.bin
+    else
+      ${security_tools_path}in_extras.py "BOOT_LOADER" ${opt_outdir_release}/in_boot_loader_extras.bin 0x00000001
+      dd if=/dev/zero of=${opt_outdir_intermediate}/uboot_prepending.bin bs=1 count=48
+      cat ${opt_outdir_intermediate}/uboot_prepending.bin ${opt_outdir_intermediate}/uboot_raw.bin > ${opt_outdir_intermediate}/uboot_prepending_raw.bin
+      binary2enc="uboot_prepending_raw.bin"
+    fi
+    genx_secure_image "BOOT_LOADER" "ree" ${opt_outdir_release}/in_boot_loader_extras.bin 0x0 ${opt_outdir_intermediate}/${binary2enc} ${opt_outdir_release}/uboot_en.bin
   else
     gen2_secure_image "uboot_suboot" ${opt_outdir_intermediate}/uboot_raw.bin ${opt_outdir_release}/uboot_en.bin
   fi
 
   echo "U-Boot SUBOOT Image Generation"
+elif [ "is${CONFIG_IMAGE_USBBOOT}" = "isy" ]; then
+  gen2_secure_image "usbboot" ${opt_outdir_intermediate}/uboot_raw.bin ${opt_outdir_release}/uboot_en.bin
+
+  echo "USBBOOT Image Generation"
 else
   ### Sign U-boot and Generate SPI U-boot combo ###
   ### Sign uboot ###
   if [ "is${CONFIG_GENX_ENABLE}" = "isy" ]; then
+    if [ "is${CONFIG_GENX_MCU}" = "isy" ]; then
+      gen_extras ${opt_outdir_release}/in_uboot_extras.bin
+      genx_secure_image "UBOOT" "ree" ${opt_outdir_release}/in_uboot_extras.bin 0x0 ${opt_outdir_intermediate}/uboot_raw.bin ${opt_outdir_release}/uboot_en.bin
+    else
      ${security_tools_path}in_extras.py "UBOOT" ${opt_outdir_release}/in_uboot_extras.bin 0x00000000
-     genx_secure_image "UBOOT" "boot" ${opt_outdir_release}/in_uboot_extras.bin 0x0 ${opt_outdir_intermediate}/uboot_raw.bin ${opt_outdir_release}/uboot_en.bin
+      genx_secure_image "UBOOT" "boot" ${opt_outdir_release}/in_uboot_extras.bin 0x0 ${opt_outdir_intermediate}/uboot_raw.bin ${opt_outdir_release}/uboot_en.bin
+    fi
   else
-     gen2_secure_image "uboot" ${opt_outdir_intermediate}/uboot_raw.bin ${opt_outdir_release}/uboot_en.bin
+      gen2_secure_image "uboot" ${opt_outdir_intermediate}/uboot_raw.bin ${opt_outdir_release}/uboot_en.bin
+  fi
+
+  if [ "is${CONFIG_GENX_MCU}" = "isy" ]; then
+    # don't pack spi image for MCU serial chip here
+    mkdir -p ${CONFIG_SYNA_SDK_OUT_TARGET_PATH}/obj/PACKAGING/subimg_intermediate
+    cp ${opt_outdir_release}/uboot_en.bin ${CONFIG_SYNA_SDK_OUT_TARGET_PATH}/obj/PACKAGING/subimg_intermediate/uboot.subimg
+    exit 0
   fi
 
   echo "SPI_Uboot Image Generation"

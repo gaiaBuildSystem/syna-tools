@@ -28,6 +28,11 @@ config UBOOT_SPIUBOOT
 	depends on !UBOOT_SUBOOT
 	default n
 
+config UBOOT_SPISUBOOT
+	bool "SPI SU-Boot to boot Linux"
+	depends on UBOOT_SUBOOT
+	default n
+
 config UBOOT_ARCH
 	string "Architechture"
 	depends on UBOOT_FASTBOOT || UBOOT_SPIUBOOT || UBOOT_SUBOOT

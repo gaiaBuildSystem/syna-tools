@@ -39,4 +39,10 @@ config TOOLCHAIN_CLANG_PATH
 	help
 		Path under VSSDK/toolchain/clang
 
+config RUST_PATH
+	string "rust path"
+	default "rust/linux-x86/1.83.0"
+	help
+		Path under VSSDK/toolchain/rust
+
 endmenu

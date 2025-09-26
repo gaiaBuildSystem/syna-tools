@@ -25,5 +25,11 @@ fi
 if [ "is${CONFIG_IMAGE_NAND}" = "isy" ]; then
   script_dir=${imagedir}/lib/boot_type/nand
 fi
+if [ "is${CONFIG_IMAGE_USBBOOT}" = "isy" ]; then
+  script_dir=${imagedir}/lib/boot_type/usb
+fi
+if [ "is${CONFIG_IMAGE_XSPI}" = "isy" ]; then
+  script_dir=${imagedir}/lib/boot_type/xspi
+fi
 
 source ${script_dir}/packaging.bashrc single ${subimg_name}

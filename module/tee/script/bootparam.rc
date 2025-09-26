@@ -19,6 +19,16 @@ else
   gen_boot_param_recovery ${opt_outdir_intermediate}/bootparam_recovery.bin
 fi
 
+f_mr_config=${module_topdir}/products/${syna_chip_name}/${boot_seclvl}/${tz_memlayout}/mr_config
+if [ -f ${f_mr_config} ]; then
+  diff ${f_mr_config} ${opt_outdir_intermediate}/bootparam.bin.mr || {
+  echo "Warning: inconsistent tee mr config file ${f_mr_config}"
+  cp ${opt_outdir_intermediate}/bootparam.bin.mr ${f_mr_config} -v
+  }
+else
+  cp ${opt_outdir_intermediate}/bootparam.bin.mr ${f_mr_config} -v
+fi
+
 if [ ${tz_rel_ver} == 2 ]; then
   source ${module_build_topdir}/script/common.rc
   gen2_secure_image bparam ${opt_outdir_intermediate}/bootparam.bin ${opt_outdir_intermediate}/bootparam_en.bin

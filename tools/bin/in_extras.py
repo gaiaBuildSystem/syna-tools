@@ -111,7 +111,7 @@ if __name__ == "__main__":
     outfile = sys.argv[2]
     x_convert2(outfile, sys.argv[3], sys.argv[4], sys.argv[5])
 
-  elif img_type == 'DSP_FW' or img_type == 'GPU_FW' or img_type == 'TSP_FW':
+  elif img_type == 'DSP_FW' or img_type == 'GPU_FW' or img_type == 'TSP_FW' or img_type == 'BOOT_LOADER_GENX_V3':
     outfile = sys.argv[2]
     x_convert2(outfile, sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6])
   else: #TO DO

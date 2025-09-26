@@ -26,47 +26,6 @@ config AMP_AUDIO_AMR_SUPPORTED
 	depends on AMP_AUDIO_USE_ARM
 	select AMP_AUDIO_AMR_USE_ARM
 
-if AMP_AUDIO_USE_ZSP
-config AMP_IP_AUDIO_DDP_SUPPORTED
-	bool "DDP (ZSP)"
-	default n
-	select AMP_IP_AUDIO_DDP_USE_ZSP
-
-
-config AMP_IP_AUDIO_DTS_SUPPORTED
-	bool
-	default n
-
-config AMP_IP_AUDIO_DTS_CORE_SUPPORTED
-	bool "DTS Core (ZSP)"
-	select AMP_IP_AUDIO_DTS_SUPPORTED
-	select AMP_IP_AUDIO_DTS_CORE_USE_ZSP
-	default n
-
-config AMP_IP_AUDIO_DTS_DUMMY_SUPPORTED
-	bool "DTS Dummy (ZSP)"
-	select AMP_IP_AUDIO_DTS_SUPPORTED
-	select AMP_IP_AUDIO_DTS_DUMMY_USE_ZSP
-	default n
-
-config AMP_IP_AUDIO_DTS_HD_SUPPORTED
-	bool "DTS HD (ZSP)"
-	select AMP_IP_AUDIO_DTS_SUPPORTED
-	select AMP_IP_AUDIO_DTS_HD_USE_ZSP
-	default n
-
-config AMP_IP_AUDIO_DTS_MA_SUPPORTED
-	bool "DTS MA (ZSP)"
-	select AMP_IP_AUDIO_DTS_SUPPORTED
-	select AMP_IP_AUDIO_DTS_MA_USE_ZSP
-	default n
-
-config AMP_IP_AUDIO_MS11_SUPPORTED
-	bool "MS11 (ZSP)"
-	default n
-	select AMP_IP_AUDIO_MS11_USE_ZSP
-endif
-
 config AMP_AUDIO_FLAC_SUPPORTED
 	bool "FLAC"
 	default y

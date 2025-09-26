@@ -92,28 +92,28 @@ if [ "is${opt_jtag_enable}" != "is" ]; then
   cmd_args="${cmd_args} --config_jtag_enable=${opt_jtag_enable}"
 fi
 
-function build_pack_install_preboot() {
+build_pack_install_preboot() {
 
 if [ "is$2" = "isy" ]; then
   echo "Skip build for $1 ${cmd_args} to save time"
 else
 ### Build PREBOOT ###
-pushd ${preboot_topdir}
+cd ${preboot_topdir} || exit 1
   ./build ${cmd_args} no_product_name
-popd
+cd - || exit 1
 fi
 
 ### Pack PREBOOT ###
-pushd ${preboot_topdir}
+cd ${preboot_topdir} || exit 1
 if [ "is$1" = "istee" ]; then
   ./pack ${cmd_args} --pack-bcm-tee=y no_product_name
 else
   ./pack ${cmd_args} --pack-bcm-tee=n no_product_name
 fi
-popd
+cd - || exit 1
 
 # if nocs (only miniloader is built) or both sysinit and miniloader are built for normal
-if [ "is${opt_profile}" = "isnocs" ] || [[ "is${preboot_build_sysinit}" = "isy" && "is${preboot_build_miniloader}" = "isy" ]]; then
+if [ "is${opt_profile}" = "isnocs" ] || { [ "is${preboot_build_sysinit}" = "isy" ] && [ "is${preboot_build_miniloader}" = "isy" ]; }; then
   ### Copy PREBOOT ###
   [ -f ${preboot_outdir_build_release}/preboot_esmt.bin ]
   [ -f ${preboot_outdir_build_release}/preboot_esmt.info ]

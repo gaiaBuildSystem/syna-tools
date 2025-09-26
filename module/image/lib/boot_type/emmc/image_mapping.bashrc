@@ -1,6 +1,10 @@
 # mapping between module and subimg
 preboot=preboot
 
+sysmgr_a=sysmgr
+sysmgr_b=sysmgr
+sysmgr=sysmgr
+
 key_1st=key
 key_2nd=key
 key_a=key

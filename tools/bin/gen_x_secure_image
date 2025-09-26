@@ -58,6 +58,7 @@ class GenXSecureImage:
     parser.add_argument('--out_store', nargs=1)
     parser.add_argument('--workdir-security-tools', nargs=1)
     parser.add_argument('--workdir-security-keys', nargs=1)
+    parser.add_argument('--tool-version', nargs=1)
 
     self.opts = parser.parse_args(args=sys.argv[1:], namespace=self.opts)
 
@@ -96,6 +97,12 @@ class GenXSecureImage:
     """ print(self.opts) """
 
   def sign_image(self):
+    if self.opts.tool_version[0] != "genx_v3":
+      self.sign_image_x()
+    else:
+      self.sign_image_x3()
+
+  def sign_image_x(self):
     """ assign AES and RSA """
     print(self.opts)
 
@@ -156,6 +163,7 @@ class GenXSecureImage:
 
     if self.opts.img_type[0] == "TZK_BOOT_PARAMETER_OPEN":
       self.opts.img_type[0] = "TZK_BOOT_PARAMETER"
+
     cmd2run.extend(["-t", self.opts.img_type[0]])
 
     if self.opts.img_type[0] != "DDR_FW0" and self.opts.img_type[0] != "DDR_FW1":
@@ -164,6 +172,80 @@ class GenXSecureImage:
       cmd2run.extend(["-S", self.opts.seg_id_mask[0]])
       cmd2run.extend(["-r", self.opts.version[0]])
       cmd2run.extend(["-R", self.opts.version_mask[0]])
+      cmd2run.extend(["-x", self.opts.extras[0]])
+
+    cmd2run.extend(["-l", self.opts.length[0]])
+    cmd2run.extend(["-i", self.opts.in_payload[0]])
+    cmd2run.extend(["-o", self.opts.out_store[0]])
+
+    exec_cmd(cmd2run)
+
+  def sign_image_x3(self):
+    """ assign AES and ecc """
+    print(self.opts)
+
+    type_map_list = {
+                     'BOOT_LOADER': 'UBOOT',
+                     'TZ_KERNEL': 'OPTEE',
+                     'TZK_BOOT_PARAMETER_OPEN': 'TEE_BOOT_PARAMETER',
+                     'LINUX_KERNEL': 'LINUX'}
+    aes_list = {
+                'BL': 'SCGK_BL.bin',
+                'SM': 'SCGK_SM.bin',
+                'GPU': 'SCGK_GPU.bin',
+                'ATF': 'SCGK_ATF.bin',
+                'OPTEE': 'SCGK_OPTEE.bin',
+                'TEE_BOOT_PARAMETER': 'SCGK_TEE_BOOT_PARAMETER.bin',
+                'UBOOT': 'SCGK_UBOOT.bin',
+                'LINUX': 'SCGK_LINUX.bin'
+                }
+    ecc_list = {
+                'BL': 'K1_B.EC521.priv.pem',
+                'SM': 'K1_B.EC521.priv.pem',
+                'GPU': 'K1_B.EC521.priv.pem',
+                'ATF': 'K1_C.EC521.priv.pem',
+                'OPTEE': 'K1_C.EC521.priv.pem',
+                'TEE_BOOT_PARAMETER': 'K1_C.EC521.priv.pem',
+                'UBOOT': 'K1_C.EC521.priv.pem',
+                'LINUX': 'K1_C.EC521.priv.pem'}
+
+    if type_map_list.get(self.opts.img_type[0]) is not None:
+      self.opts.img_type[0] = type_map_list.get(self.opts.img_type[0])
+
+
+    if aes_list.get(self.opts.img_type[0]) is not None:
+      aes_key = self.opts.workdir_security_keys + "/" + aes_list.get(self.opts.img_type[0])
+
+    if self.opts.img_type[0] != "DDR_FW0" and self.opts.img_type[0] != "DDR_FW1":
+      signing_key = self.opts.workdir_security_keys + "/" + ecc_list.get(self.opts.img_type[0])
+
+    """ Command and arguments """
+    exec_bin = Path(self.opts.workdir_security_tools) / 'genx_img_v3'
+    exec_bin = exec_bin.as_posix()
+
+    if not os.access(exec_bin, os.X_OK):
+        exec_bin = Path(self.opts.workdir_security_tools).parent / 'lib' / 'sec_tools' / 'bin' / 'genx_img_v3'
+        exec_bin = exec_bin.as_posix()
+        if not os.access(exec_bin, os.X_OK):
+            exec_bin = shutil.which('genx_img_v3')
+    if not exec_bin:
+      raise Exception("can't find genx_img_v3")
+
+    cmd2run = [ exec_bin ]
+
+    #if aes_list.get(self.opts.img_type[0]) is not None:
+    #  cmd2run.extend(["-k", aes_key])
+    #else:
+    #  cmd2run.extend(["--noenc"])
+
+    cmd2run.extend(["--noenc"])
+
+    cmd2run.extend(["-t", self.opts.img_type[0]])
+
+    if self.opts.img_type[0] != "DDR_FW0" and self.opts.img_type[0] != "DDR_FW1":
+      cmd2run.extend(["-n", signing_key])
+      cmd2run.extend(["-s", self.opts.seg_id[0]])
+      cmd2run.extend(["-r", self.opts.version[0]])
       cmd2run.extend(["-x", self.opts.extras[0]])
 
     cmd2run.extend(["-l", self.opts.length[0]])

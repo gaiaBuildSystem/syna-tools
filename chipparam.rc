@@ -24,6 +24,11 @@ unset CONFIG_BERLIN_LIST_FASTBOOT
 unset syna_fastboot_set
 unset CONFIG_BERLIN_LIST_TEEI
 unset syna_teei
+unset CONFIG_TA_GFX_IMG
+unset CONFIG_TA_GFX_IMG_LINUX
+unset CONFIG_PR_SYNA_TA
+unset CONFIG_AMPSDK
+unset CONFIG_GENX_MCU
 
 chip_release_config="${topdir}/out/.config.${chip}"
 
