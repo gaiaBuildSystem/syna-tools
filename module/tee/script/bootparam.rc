@@ -1,6 +1,6 @@
 ### Generate TZ Boot Parameters
 
-pushd ${module_topdir}
+cd ${module_topdir} || exit 1
 
 ### by default, boot with tee is enabled
 
@@ -49,4 +49,4 @@ if [ ${tz_rel_ver} == genx ]; then
   fi
 fi
 
-popd
+cd - || exit 1

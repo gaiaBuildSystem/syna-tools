@@ -133,6 +133,13 @@ else # VSSDK release build
     set -- install_rel
     . ${module_build_topdir}/script/install_binary.rc
   )
+
+  ### overwrite prebuilt bootparameter image
+  if [ -z "${CONFIG_RUNTIME_OE}${CONFIG_RUNTIME_OE64}${CONFIG_RUNTIME_RDK}${CONFIG_RDK_SYS}" ]; then
+      if [ "${CONFIG_OPEN_TEE}" = "y" ]; then
+        . "${module_build_topdir}/script/bootparam.rc"
+      fi
+  fi
 fi
 
 ### step 3: oem + tzk_en.bin ###
